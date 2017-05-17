@@ -1,3 +1,3 @@
-package com.scottlogic.demo.util;
+package com.scottlogic.common.util;
 
 public interface IntegrationTest {}

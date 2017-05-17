@@ -1,4 +1,4 @@
-package com.scottlogic.demo.rest;
+package com.scottlogic.jee.rest;
 
 import javax.ws.rs.core.Response;
 import static org.hamcrest.CoreMatchers.*;

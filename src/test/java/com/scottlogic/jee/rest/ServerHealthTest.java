@@ -1,6 +1,6 @@
-package com.scottlogic.demo.rest;
+package com.scottlogic.jee.rest;
 
-import com.scottlogic.demo.util.IntegrationTest;
+import com.scottlogic.common.util.IntegrationTest;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;

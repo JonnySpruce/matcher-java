@@ -1,4 +1,4 @@
-package com.scottlogic.demo.rest;
+package com.scottlogic.jee.rest;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -13,7 +13,7 @@ public class HealthcheckEndpoint {
     @Produces("text/plain")
     public Response doGet()
     {
-        return ok("saad").build();
+        return ok().build();
     }
 
 }
