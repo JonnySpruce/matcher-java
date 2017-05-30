@@ -15,8 +15,8 @@
             <actionName>CUSTOM-start</actionName>
             <displayName>start</displayName>
             <goals>
-                <goal>mvn</goal>
                 <goal>wildfly-swarm:run</goal>
+                
             </goals>
         </action>
         <action>

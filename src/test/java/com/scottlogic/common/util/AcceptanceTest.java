@@ -1,3 +1,3 @@
 package com.scottlogic.common.util;
 
-public interface IntegrationTest {}
+public interface AcceptanceTest {}
