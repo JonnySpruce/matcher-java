@@ -8,7 +8,7 @@ mvn wildfly-swarm:run
 
 or
 
-mvn package
+mvn package  
 java -jar back-end-training-swarm.jar
 
 ### Default port
@@ -19,12 +19,12 @@ http://localhost:8080/healthcheck
 
 ### Potential expansion paths
 
-Push notification on successful trade (MQ, WebSockets?)
-Authentication to auto assign account number to orders/listings.
-Authentication to limit viewable listings (own listings only?)
-External service call for currency conversion rates to support localisation.
-Persistence for DR (DB backed impl of OrderMatcher?)
-Auditing to collect account stats (number trades, total profit/loss, e.t.c.)
-Filters/interceptors (CORS?)
-Service layer validation (JSR303).
-Enhanced locking (container managed, e.t.c.)
+* Push notification on successful trade (MQ, WebSockets?)
+* Authentication to auto assign account number to orders/listings.
+* Authentication to limit viewable listings (own listings only?)
+* External service call for currency conversion rates to support localisation.
+* Persistence for DR (DB backed impl of OrderMatcher?)
+* Auditing to collect account stats (number trades, total profit/loss, e.t.c.)
+* Filters/interceptors (CORS?)
+* Service layer validation (JSR303).
+* Enhanced locking (container managed, e.t.c.)
