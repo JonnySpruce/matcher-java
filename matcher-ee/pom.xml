@@ -43,7 +43,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>back-end-training</finalName>
+        <finalName>matcher-ee</finalName>
         <plugins>
             <plugin>
                 <groupId>org.wildfly.swarm</groupId>
