@@ -1,30 +1,18 @@
-# back-end-training-java
+# Backend Training Java
 
-## Java EE
+This project is related to the
+[Scott Logic backend training](https://docs.google.com/a/scottlogic.co.uk/document/d/1HUDpO1fpfSFmYyDpPLJPcUJg4g8tYZeZLN7dN7KyDLA/edit?usp=sharing).
 
-### Starting server
+It contains a basic service skeleton with a simple client implementation (used for testing purposes) and a Spring Boot
+server which also provides a Socket.IO server using [Netty-socketio](https://github.com/mrniko/netty-socketio).
 
-mvn wildfly-swarm:run
+## Getting started
 
-or
+To run the project checkout the code cd to the service-skeleton folder and run:
 
-mvn package  
-java -jar back-end-training-swarm.jar
+``` bash
+gradle bootRun
+```
+Note: You might find it more convenient to run the project through your IDE and many have Gradle integration.
 
-### Default port
-
-http://localhost:8080/healthcheck
-
-## Matching Engine
-
-### Potential expansion paths
-
-* Push notification on successful trade (MQ, WebSockets?)
-* Authentication to auto assign account number to orders/listings.
-* Authentication to limit viewable listings (own listings only?)
-* External service call for currency conversion rates to support localisation.
-* Persistence for DR (DB backed impl of OrderMatcher?)
-* Auditing to collect account stats (number trades, total profit/loss, e.t.c.)
-* Filters/interceptors (CORS?)
-* Service layer validation (JSR303).
-* Enhanced locking (container managed, e.t.c.)
+Once the server has started navigate to localhost:8080 and you should see the test client.
