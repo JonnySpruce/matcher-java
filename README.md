@@ -15,4 +15,8 @@ gradle bootRun
 ```
 Note: You might find it more convenient to run the project through your IDE and many have Gradle integration.
 
-Once the server has started navigate to localhost:8080 and you should see the test client.
+## Test Harness
+
+Once the Spring Boot server has started navigate to localhost:8080 and you should see a test client which will help you get up and running with testing your websocket code.
+
+If you want to make any changes to this the code for the harness is located in the [resources folder](service-skeleton/src/main/resources/static).
