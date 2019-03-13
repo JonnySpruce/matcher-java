@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 /*
  * This is where you wire up your socket.io namespaces and events.
  *
- * Currently it just prints log messages on the events but you'll want to wire these events up to your matcher code.
+ * Currently it just prints log messages on the events but you'll want to wire these events up to your com.scottlogic.training.matcher code.
  */
 @Component
 public class OrderModule {
