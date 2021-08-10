@@ -23,9 +23,5 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '2.1.3.RELEASE', ext: 'pom'
     implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.1.3.RELEASE'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.3'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.3'
-    implementation group: 'com.corundumstudio.socketio', name: 'netty-socketio', version: '1.7.17'
-    implementation 'org.webjars:sockjs-client:1.0.2'
-    implementation 'org.webjars:stomp-websocket:2.3.3'
     testImplementation group: 'junit', name: 'junit', version: '4.11'
 }

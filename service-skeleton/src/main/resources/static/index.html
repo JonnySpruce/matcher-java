@@ -64,39 +64,50 @@
     </div>
 </div>
 
-<script src="js/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="js/stomp.min.js"></script>
 <script src="js/moment.min.js"></script>
 <script src="js/jquery-1.10.1.min.js"></script>
 
 <script>
     var userName = 'user' + Math.floor((Math.random() * 1000) + 1);
-    var socket = io('http://localhost:9092/order');
-    socket.connect();
-    socket.on('connect', function () {
-        $('#console').html('');
-        output('<span class="connect-msg">Client has connected to the server!</span>');
-    });
-    socket.on('order', function (data) {
-        console.log('Received order', data);
-        output('<span class="username-msg">' + data.userName + '</span> placed a ' + data.orderType + ' order');
-    });
-    socket.on('disconnect', function () {
-        output('<span class="disconnect-msg">The client has disconnected!</span>');
-    });
-    function sendDisconnect() {
-        socket.disconnect();
+    var stompClient = null;
+
+    connect()
+
+    function connect() {
+        var socket = new SockJS('/gs-guide-websocket');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            $('#console').html('');
+            output('<span class="connect-msg">Client has connected to the server!</span>');
+            stompClient.subscribe('/topic/trades', function (trades) {
+                output(JSON.parse(trades.body).content);
+            });
+        });
     }
+
+    function sendDisconnect() {
+        if (stompClient !== null) {
+            stompClient.disconnect();
+            output("Disconnected!");
+        }
+    }
+
     function placeOrder() {
         var $orderType = $('#orderType');
         var orderType = $orderType.val();
-        var jsonObject = {userName: userName, orderType: orderType};
-        socket.emit('order', jsonObject);
+        var jsonObject = {userName: userName, orderType: orderType, };
+        stompClient.send("/app/placeOrder", {}, jsonObject);
+        output("Placing order...");
     }
+
     function output(message) {
         var currentTime = "<span class='time'>" + moment().format('HH:mm:ss.SSS') + "</span>";
         var element = $("<div>" + currentTime + " " + message + "</div>");
         $('#console').prepend(element);
     }
+
     $(document).keydown(function (e) {
         if (e.keyCode == 13) {
             $('#send').click();
