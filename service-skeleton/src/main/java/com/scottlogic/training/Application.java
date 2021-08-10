@@ -18,19 +18,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RestController
 public class Application {
 
-    @Value("${rt.server.host}")
-    private String host;
-
-    @Value("${rt.server.port}")
-    private Integer port;
-
-    @Bean
-    public SocketIOServer socketIOServer() {
-        Configuration config = new Configuration();
-        config.setHostname(host);
-        config.setPort(port);
-        return new SocketIOServer(config);
-    }
+//    @Value("${rt.server.host}")
+//    private String host;
+//
+//    @Value("${rt.server.port}")
+//    private Integer port;
+//
+//    @Bean
+//    public SocketIOServer socketIOServer() {
+//        Configuration config = new Configuration();
+//        config.setHostname(host);
+//        config.setPort(port);
+//        return new SocketIOServer(config);
+//    }
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(Application.class).run(args);
