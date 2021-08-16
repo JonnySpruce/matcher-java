@@ -12,6 +12,7 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -20,5 +21,14 @@ dependencies {
     implementation 'org.springframework:spring-messaging'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation('org.apache.spark:spark-sql_2.12:3.1.2') {
+        exclude module: "slf4j-log4j12"
+    }
+    implementation 'org.codehaus.janino:commons-compiler:3.0.16'
+    implementation 'org.codehaus.janino:janino:3.0.16'
+    implementation ('org.apache.spark:spark-hive_2.12:3.1.2') {
+        exclude module: "slf4j-log4j12"
+    }
+    implementation "com.solacesystems:sol-jcsmp:10.2.0"
     testImplementation 'junit:junit'
 }

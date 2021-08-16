@@ -1,39 +1,74 @@
 package com.scottlogic.training.matcher;
 
-import org.graalvm.compiler.lir.CompositeValue;
-import org.springframework.stereotype.Component;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class Order implements Comparable<Order> {
-    private final String account;
-    private final double price;
+public class Order implements Comparable<Order>, Serializable {
+    private static final AtomicLong idCounter = new AtomicLong();
+    private Timestamp createDateTime;
+    private String id;
+    private String account;
     private int quantity;
-    private final OrderAction action;
-    private final LocalDateTime createDateTime;
+    private double price;
+    private OrderAction action;
 
-    public Order(String account, double price, int quantity, OrderAction action) {
+    @JsonCreator
+    public Order(@JsonProperty("account") String account, @JsonProperty("price") double price, @JsonProperty("quantity") int quantity, @JsonProperty("action") OrderAction action) {
+        this.id = UUID.randomUUID().toString();
         this.account = account;
         this.price = price;
         this.quantity = quantity;
         this.action = action;
-        this.createDateTime = LocalDateTime.now();
+        this.createDateTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Order() {
+        this.id = UUID.randomUUID().toString();
+        this.account = "account";
+        this.price = 0.0;
+        this.quantity = 0;
+        this.action = OrderAction.BUY;
+        this.createDateTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Order(String id, String account, double price, int quantity, OrderAction action, Timestamp createDateTime) {
+        this.id = id;
+        this.account = account;
+        this.price = price;
+        this.quantity = quantity;
+        this.action = action;
+        this.createDateTime = createDateTime;
+    }
+
+    public void setCreateDateTime(Timestamp createDateTime) {
+        this.createDateTime = createDateTime;
     }
 
     public String getAccount() {
         return account;
     }
 
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
     public double getPrice() {
         return price;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void reduceQuantity(int amount) throws Exception {
-        setQuantity(quantity - amount);
+    public int getQuantity() {
+        return quantity;
     }
 
     public void setQuantity(int quantity) throws Exception {
@@ -41,7 +76,11 @@ public class Order implements Comparable<Order> {
         this.quantity = quantity;
     }
 
-    public LocalDateTime getCreateDateTime() {
+    public void reduceQuantity(int amount) throws Exception {
+        setQuantity(quantity - amount);
+    }
+
+    public Timestamp getCreateDateTime() {
         return createDateTime;
     }
 
@@ -49,14 +88,64 @@ public class Order implements Comparable<Order> {
         return action;
     }
 
+    public void setAction(OrderAction action) {
+        this.action = action;
+    }
+
     @Override
     public int compareTo(Order otherOrder) {
-        int comparison = Double.compare(getPrice(),  otherOrder.getPrice());
+        int comparison = Double.compare(getPrice(), otherOrder.getPrice());
 
         if (comparison == 0) {
             comparison = createDateTime.compareTo(otherOrder.getCreateDateTime());
         }
 
         return comparison;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "createDateTime=" + createDateTime +
+                ", id='" + id + '\'' +
+                ", account='" + account + '\'' +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", action=" + action +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        /* Check if o is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof Order)) {
+            return false;
+        }
+
+        // typecast o to Complex so that we can compare data members
+        Order order = (Order) o;
+
+        // Compare the data members and return accordingly
+        return  id.equals(order.id)
+                && account.equals(order.account)
+                && Double.compare(price, order.price) == 0
+                && quantity == order.quantity
+                && action.equals(order.action)
+                && createDateTime.equals(order.createDateTime);
     }
 }

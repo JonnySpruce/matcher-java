@@ -2,7 +2,10 @@ package com.scottlogic.training.matcher;
 
 import static org.junit.Assert.*;
 
+import org.apache.spark.SparkConf;
+import org.apache.spark.sql.SparkSession;
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,18 +13,35 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class MatcherTest {
+    private static Matcher matcher;
+
+    @BeforeClass
+    public static void setUp() {
+        SparkConf conf = new SparkConf();
+        conf.set("spark.master", "local");
+
+        SparkSession spark = SparkSession.builder()
+                .appName("testOrderMatcher")
+                .config(conf)
+                .enableHiveSupport()
+                .getOrCreate();
+        IOrderList list = new OrderSQLList(spark);
+        matcher = new Matcher(list);
+        matcher.getOrderList().resetOrders();
+    }
+
     @After
     public void tidyUp() {
-        Matcher.getOrderList().resetOrders();
+        matcher.getOrderList().resetOrders();
     }
 
     @Test
     public void addsBuyOrder() throws Exception {
         Order order = new Order("test", 2.0, 1, OrderAction.BUY);
-        Matcher.receiveOrder(order);
+        matcher.receiveOrder(order);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(0, sellList.size());
         assertEquals(1, buyList.size());
@@ -31,10 +51,10 @@ public class MatcherTest {
     @Test
     public void addsSellOrder() throws Exception {
         Order order = new Order("test", 2.0, 1, OrderAction.SELL);
-        Matcher.receiveOrder(order);
+        matcher.receiveOrder(order);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(0, buyList.size());
         assertEquals(1, sellList.size());
@@ -46,11 +66,11 @@ public class MatcherTest {
         Order buyOrder = new Order("test", 2.0, 1, OrderAction.BUY);
         Order sellOrder = new Order("test2", 2.0, 1, OrderAction.SELL);
 
-        Matcher.receiveOrder(buyOrder);
-        List<Trade> trades = Matcher.receiveOrder(sellOrder);
+        matcher.receiveOrder(buyOrder);
+        List<Trade> trades = matcher.receiveOrder(sellOrder);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(0, buyList.size());
         assertEquals(0, sellList.size());
@@ -65,11 +85,11 @@ public class MatcherTest {
         Order sellOrder = new Order("test", 2.0, 1, OrderAction.SELL);
         Order buyOrder = new Order("test2", 2.0, 1, OrderAction.BUY);
 
-        Matcher.receiveOrder(sellOrder);
-        List<Trade> trades = Matcher.receiveOrder(buyOrder);
+        matcher.receiveOrder(sellOrder);
+        List<Trade> trades = matcher.receiveOrder(buyOrder);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(0, buyList.size());
         assertEquals(0, sellList.size());
@@ -84,11 +104,11 @@ public class MatcherTest {
         Order sellOrder = new Order("test", 2.0, 2, OrderAction.SELL);
         Order buyOrder = new Order("test2", 2.0, 1, OrderAction.BUY);
 
-        Matcher.receiveOrder(sellOrder);
-        List<Trade> trades = Matcher.receiveOrder(buyOrder);
+        matcher.receiveOrder(sellOrder);
+        List<Trade> trades = matcher.receiveOrder(buyOrder);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(0, buyList.size());
         assertEquals(1, sellList.size());
@@ -105,11 +125,11 @@ public class MatcherTest {
         Order sellOrder = new Order("test", 2.0, 1, OrderAction.SELL);
         Order buyOrder = new Order("test2", 2.0, 2, OrderAction.BUY);
 
-        Matcher.receiveOrder(sellOrder);
-        List<Trade> trades = Matcher.receiveOrder(buyOrder);
+        matcher.receiveOrder(sellOrder);
+        List<Trade> trades = matcher.receiveOrder(buyOrder);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(1, buyList.size());
         assertEquals(0, sellList.size());
@@ -125,14 +145,14 @@ public class MatcherTest {
     public void largeNewOrderMultipleMatches() throws Exception {
         for (int i = 0; i < 10; i++) {
             Order sellOrder = new Order("test", 2.0, 1, OrderAction.SELL);
-            Matcher.receiveOrder(sellOrder);
+            matcher.receiveOrder(sellOrder);
         }
 
         Order buyOrder = new Order("test2", 2.0, 11, OrderAction.BUY);
-        List<Trade> trades = Matcher.receiveOrder(buyOrder);
+        List<Trade> trades = matcher.receiveOrder(buyOrder);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(1, buyList.size());
         assertEquals(0, sellList.size());
@@ -150,12 +170,12 @@ public class MatcherTest {
         Order sellOrder2 = new Order("test", 1.0, 1, OrderAction.SELL);
         Order buyOrder = new Order("test2", 2.0, 1, OrderAction.BUY);
 
-        Matcher.receiveOrder(sellOrder);
-        Matcher.receiveOrder(sellOrder2);
-        List<Trade> trades = Matcher.receiveOrder(buyOrder);
+        matcher.receiveOrder(sellOrder);
+        matcher.receiveOrder(sellOrder2);
+        List<Trade> trades = matcher.receiveOrder(buyOrder);
 
-        List<Order> buyList = Matcher.getOrderList().getBuyList();
-        List<Order> sellList = Matcher.getOrderList().getSellList();
+        List<Order> buyList = matcher.getOrderList().getBuyOrders();
+        List<Order> sellList = matcher.getOrderList().getSellOrders();
 
         assertEquals(0, buyList.size());
         assertEquals(1, sellList.size());
@@ -164,6 +184,6 @@ public class MatcherTest {
         assertEquals(1.0, trades.get(0).getPrice(), 0.0);
         assertEquals(1, trades.get(0).getQuantity());
 
-        assertEquals(1, buyList.get(0).getQuantity());
+        assertEquals(2.0, sellList.get(0).getPrice(), 0.0);
     }
 }

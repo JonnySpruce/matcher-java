@@ -1,23 +1,29 @@
 package com.scottlogic.training.matcher;
 
-import java.lang.reflect.Array;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+@Component
 public class Matcher {
-    private static OrderList orderList;
+    private final IOrderList orderList;
 
-    static {
-        orderList = new OrderList();
+    @Autowired
+    public Matcher(IOrderList orderList) {
+        this.orderList = orderList;
     }
 
-    public static OrderList getOrderList() {
+    public IOrderList getOrderList() {
         return orderList;
     }
 
-    public static List<Trade> receiveOrder(Order order) throws Exception {
-        List<Order> oppositeOrders = orderList.getOppositeActionList(order);
+    public List<Trade> receiveOrder(Order order) throws Exception {
+        System.out.println("orderList");
+        System.out.println(orderList);
+
+        List<Order> oppositeOrders = orderList.getOppositeActionOrders(order);
 
         List<Trade> trades = executeTrades(order, oppositeOrders);
 
@@ -27,9 +33,10 @@ public class Matcher {
         return trades;
     }
     
-    private static List<Trade> executeTrades(Order newOrder, List<Order> oppositeOrderList) throws Exception {
+    private List<Trade> executeTrades(Order newOrder, List<Order> oppositeOrderList) throws Exception {
         List<Trade> trades = new ArrayList<>();
         List<Order> removeOrders = new ArrayList<>();
+        List<Order> updateOrders = new ArrayList<>();
 
         for (Order oldOrder : oppositeOrderList) {
             if (newOrder.getQuantity() == 0) break;
@@ -43,16 +50,20 @@ public class Matcher {
 
                 if (oldOrder.getQuantity() == 0) {
                     removeOrders.add(oldOrder);
+                } else {
+                    updateOrders.add(oldOrder);
                 }
             }
         }
-
+        for (Order o : updateOrders){
+            orderList.updateOrder(o);
+        }
         orderList.removeOrders(removeOrders);
 
         return trades;
     }
 
-    private static boolean isOrderMatch(Order newOrder, Order oldOrder) {
+    private boolean isOrderMatch(Order newOrder, Order oldOrder) {
         if (newOrder.getAction() == oldOrder.getAction()) return false;
         if (newOrder.getAction() == OrderAction.BUY && newOrder.getPrice() >= oldOrder.getPrice()) return true;
 

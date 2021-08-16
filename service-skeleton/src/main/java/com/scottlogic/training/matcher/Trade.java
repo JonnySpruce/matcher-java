@@ -2,7 +2,9 @@ package com.scottlogic.training.matcher;
 
 import org.springframework.stereotype.Component;
 
-public class Trade {
+import java.io.Serializable;
+
+public class Trade implements Serializable {
     private final double price;
     private final int quantity;
 
