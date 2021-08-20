@@ -3,6 +3,8 @@ package com.scottlogic.training.matcher;
 import java.util.List;
 
 public interface IOrderList {
+    public List<Order> getAllOrders();
+
     public List<Order> getBuyOrders();
 
     public List<Order> getSellOrders();

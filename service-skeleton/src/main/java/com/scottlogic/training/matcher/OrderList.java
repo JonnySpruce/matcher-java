@@ -10,6 +10,12 @@ public abstract class OrderList implements IOrderList {
 
     public abstract List<Order> getSellOrders();
 
+    public List<Order> getAllOrders() {
+        List<Order> orders = getBuyOrders();
+        orders.addAll(getSellOrders());
+        return orders;
+    };
+
     public abstract void addOrder(Order order) throws Exception;
 
     public abstract void removeOrder(Order order) throws Exception;

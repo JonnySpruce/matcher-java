@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.scottlogic.training";
+option java_outer_classname = "MatcherProto";
+option objc_class_prefix = "MRPC";
+
+package matcherRPC;
+
+// The greeting service definition.
+service Matcher {
+  rpc PlaceOrder (PlaceOrderGrpc) returns (stream TradeGrpc) {}
+  rpc GetOrders (NoParams) returns (stream OrderGrpc) {}
+}
+
+message PlaceOrderGrpc {
+  string account = 1;
+  double price = 2;
+  int32 quantity = 3;
+  string action = 4;
+}
+
+message OrderGrpc {
+  string id = 1;
+  string account = 2;
+  double price = 3;
+  int32 quantity = 4;
+  string action = 5;
+  google.protobuf.Timestamp createDateTime = 6;
+}
+
+message TradeGrpc {
+  double price = 1;
+  int32 quantity = 2;
+}
+
+message NoParams {}
