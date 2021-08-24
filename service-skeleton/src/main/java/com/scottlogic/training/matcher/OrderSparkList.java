@@ -13,7 +13,7 @@ import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+
 public class OrderSparkList extends OrderList {
     private final SparkSession spark;
     private final Encoder<Order> orderEncoder;

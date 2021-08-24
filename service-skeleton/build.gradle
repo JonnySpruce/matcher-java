@@ -23,7 +23,9 @@ def protocVersion = protobufVersion
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-parent:2.5.4'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.integration:spring-integration-jms:5.5.3'
     implementation 'org.springframework:spring-messaging'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
@@ -35,11 +37,12 @@ dependencies {
     implementation ('org.apache.spark:spark-hive_2.12:3.1.2') {
         exclude module: "slf4j-log4j12"
     }
-    implementation "com.solacesystems:sol-jcsmp:10.2.0"
+//    implementation "com.solacesystems:sol-jcsmp:10.2.0"
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
     implementation 'net.devh:grpc-server-spring-boot-starter:2.12.0.RELEASE'
+    implementation 'com.solace.spring.boot:solace-jms-spring-boot-starter:4.1.0'
     testImplementation 'junit:junit'
 }
 

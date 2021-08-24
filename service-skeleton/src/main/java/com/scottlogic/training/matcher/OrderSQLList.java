@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+
 public class OrderSQLList extends OrderList {
     private final SparkSession spark;
 
