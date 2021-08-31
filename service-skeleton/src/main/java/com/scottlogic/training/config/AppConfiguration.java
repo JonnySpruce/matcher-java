@@ -2,6 +2,7 @@ package com.scottlogic.training.config;
 
 import com.scottlogic.training.matcher.IOrderList;
 import com.scottlogic.training.matcher.OrderArrayList;
+import com.scottlogic.training.matcher.OrderFluxList;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.context.annotation.Bean;
@@ -12,20 +13,20 @@ import org.springframework.context.annotation.Primary;
 public class AppConfiguration {
 
 
-    @Bean
-    public SparkSession getSparkSession()
-    {
-        SparkConf conf = new SparkConf();
-        conf.set("spark.master", "local");
-
-        SparkSession spark = SparkSession.builder()
-                .appName("orderMatcher")
-                .config(conf)
-                .enableHiveSupport()
-                .getOrCreate();
-
-        return spark;
-    }
+//    @Bean
+//    public SparkSession getSparkSession()
+//    {
+//        SparkConf conf = new SparkConf();
+//        conf.set("spark.master", "local");
+//
+//        SparkSession spark = SparkSession.builder()
+//                .appName("orderMatcher")
+//                .config(conf)
+//                .enableHiveSupport()
+//                .getOrCreate();
+//
+//        return spark;
+//    }
 //
 //    @Bean
 //    public JCSMPSession getSolaceSession(
@@ -53,7 +54,7 @@ public class AppConfiguration {
 
     @Primary
     @Bean
-    public IOrderList getOrderList(SparkSession spark) {
-        return new OrderArrayList();
+    public IOrderList getOrderList() {
+        return new OrderFluxList();
     }
 }

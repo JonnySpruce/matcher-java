@@ -1,7 +1,9 @@
 package com.scottlogic.training.solaceController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.scottlogic.training.matcher.Matcher;
 import com.scottlogic.training.matcher.Order;
 import com.scottlogic.training.matcher.Trade;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.messaging.converter.MessageConversionException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -95,6 +99,30 @@ public class SolaceController {
         List<Trade> trades = matcher.receiveOrder(newOrder);
 
         String tradesJSON = objectMapper.writeValueAsString(trades);
+        System.out.println(tradesJSON);
+
+        jmsTemplate.convertAndSend(tradesTopic, tradesJSON);
+    }
+
+    @JmsListener(destination = "${solace.queue.placeOrderWildcard}")
+    public void placeOrderWildcard(SolBytesMessage placeOrderMessage) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+        String userName = placeOrderMessage.getJMSDestination().toString().split("/")[1];
+
+        String jsonOrder = new String(placeOrderMessage.getBackingArray());
+
+        JsonNode jsonNode = mapper.readTree(jsonOrder);
+        ((ObjectNode) jsonNode).put("account", userName);
+
+        String json = mapper.writeValueAsString(jsonNode);
+        System.out.println("json order = " + json);
+
+        Order newOrder = mapper.readValue(jsonOrder, Order.class);
+
+        List<Trade> trades = matcher.receiveOrder(newOrder);
+
+        String tradesJSON = mapper.writeValueAsString(trades);
         System.out.println(tradesJSON);
 
         jmsTemplate.convertAndSend(tradesTopic, tradesJSON);

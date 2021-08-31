@@ -302,7 +302,7 @@ class PubSubPlusBroker {
 
       //assign the message to our callback for use by the caller.
       //We dump a more detailed format of the message to the debug log
-      oResultCallback(sMessage.getBinaryAttachment());
+      oResultCallback(sMessage.getXmlContentDecoded());
       console.debug(sMessage.dump());
     });
   }

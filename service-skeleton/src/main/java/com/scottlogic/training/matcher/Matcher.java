@@ -2,6 +2,7 @@ package com.scottlogic.training.matcher;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.FluxSink;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class Matcher {
 
         if (order.getQuantity() > 0)
             orderList.addOrder(order);
+
+//        Flux.from
+
 
         return trades;
     }
