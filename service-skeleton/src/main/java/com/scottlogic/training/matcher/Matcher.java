@@ -1,5 +1,6 @@
 package com.scottlogic.training.matcher;
 
+import com.scottlogic.training.events.TradeEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.FluxSink;
@@ -10,6 +11,9 @@ import java.util.List;
 @Component
 public class Matcher {
     private final IOrderList orderList;
+
+    @Autowired
+    private TradeEventPublisher tradeEventPublisher;
 
     @Autowired
     public Matcher(IOrderList orderList) {
@@ -31,8 +35,7 @@ public class Matcher {
         if (order.getQuantity() > 0)
             orderList.addOrder(order);
 
-//        Flux.from
-
+        tradeEventPublisher.publish(trades);
 
         return trades;
     }
@@ -73,5 +76,4 @@ public class Matcher {
 
         return newOrder.getAction() == OrderAction.SELL && newOrder.getPrice() <= oldOrder.getPrice();
     }
-
 }
