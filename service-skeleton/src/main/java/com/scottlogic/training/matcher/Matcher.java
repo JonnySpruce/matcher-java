@@ -1,9 +1,10 @@
 package com.scottlogic.training.matcher;
 
-import com.scottlogic.training.events.TradeEventPublisher;
+import com.scottlogic.training.matcher.enums.OrderAction;
+import com.scottlogic.training.matcher.events.TradeEventPublisher;
+import com.scottlogic.training.matcher.orderList.IOrderList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.FluxSink;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,6 @@ public class Matcher {
     }
 
     public List<Trade> receiveOrder(Order order) throws Exception {
-        System.out.println("orderList");
-        System.out.println(orderList);
-
         List<Order> oppositeOrders = orderList.getOppositeActionOrders(order);
 
         List<Trade> trades = executeTrades(order, oppositeOrders);
@@ -35,7 +33,8 @@ public class Matcher {
         if (order.getQuantity() > 0)
             orderList.addOrder(order);
 
-        tradeEventPublisher.publish(trades);
+        if (!trades.isEmpty())
+            tradeEventPublisher.publish(trades);
 
         return trades;
     }
@@ -49,7 +48,6 @@ public class Matcher {
             if (newOrder.getQuantity() == 0) break;
 
             if (isOrderMatch(newOrder, oldOrder)) {
-                System.out.println("ORDER MATCHED");
                 Trade newTrade = Trade.generateTrade(newOrder, oldOrder);
                 newOrder.reduceQuantity(newTrade.getQuantity());
                 oldOrder.reduceQuantity(newTrade.getQuantity());

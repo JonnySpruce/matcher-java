@@ -1,12 +1,13 @@
-package com.scottlogic.training.matcher;
+package com.scottlogic.training.matcher.orderList;
 
+import com.scottlogic.training.matcher.Order;
+import com.scottlogic.training.matcher.enums.OrderAction;
 import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.Dataset;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

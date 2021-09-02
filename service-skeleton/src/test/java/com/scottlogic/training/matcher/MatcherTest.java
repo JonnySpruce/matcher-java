@@ -2,15 +2,16 @@ package com.scottlogic.training.matcher;
 
 import static org.junit.Assert.*;
 
+import com.scottlogic.training.matcher.enums.OrderAction;
+import com.scottlogic.training.matcher.orderList.IOrderList;
+import com.scottlogic.training.matcher.orderList.OrderSQLList;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.SparkSession;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class MatcherTest {
     private static Matcher matcher;

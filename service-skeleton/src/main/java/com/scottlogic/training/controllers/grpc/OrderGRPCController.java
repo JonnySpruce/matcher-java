@@ -1,10 +1,10 @@
-package com.scottlogic.training.grpcController;
+package com.scottlogic.training.controllers.grpc;
 
 import com.google.protobuf.Timestamp;
 import com.scottlogic.training.*;
 import com.scottlogic.training.matcher.Matcher;
 import com.scottlogic.training.matcher.Order;
-import com.scottlogic.training.matcher.OrderAction;
+import com.scottlogic.training.matcher.enums.OrderAction;
 import com.scottlogic.training.matcher.Trade;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;

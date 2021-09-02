@@ -1,7 +1,8 @@
-package com.scottlogic.training.matcher;
+package com.scottlogic.training.matcher.orderList;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.scottlogic.training.matcher.Order;
+import com.scottlogic.training.matcher.enums.OrderAction;
+
 import java.util.List;
 
 public abstract class OrderList implements IOrderList {

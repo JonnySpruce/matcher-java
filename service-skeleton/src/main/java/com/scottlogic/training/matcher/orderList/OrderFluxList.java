@@ -1,9 +1,9 @@
-package com.scottlogic.training.matcher;
+package com.scottlogic.training.matcher.orderList;
 
+import com.scottlogic.training.matcher.Order;
+import com.scottlogic.training.matcher.enums.OrderAction;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderFluxList extends OrderList {

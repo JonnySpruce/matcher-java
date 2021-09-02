@@ -1,4 +1,4 @@
-package com.scottlogic.training.websocket;
+package com.scottlogic.training.controllers.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

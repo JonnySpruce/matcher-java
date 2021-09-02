@@ -1,6 +1,6 @@
-package com.scottlogic.training.matcher;
+package com.scottlogic.training.matcher.orderList;
 
-import org.springframework.stereotype.Component;
+import com.scottlogic.training.matcher.Order;
 
 import java.util.ArrayList;
 import java.util.Collections;
