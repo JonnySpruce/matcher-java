@@ -13,8 +13,12 @@ public class TradeEventPublisher {
     private ApplicationEventPublisher applicationEventPublisher;
 
     public void publish(final List<Trade> trades) {
-        System.out.println("Publishing trades event. ");
-        TradesEvent tradesEvent = new TradesEvent(this, trades);
-        applicationEventPublisher.publishEvent(tradesEvent);
+        if(applicationEventPublisher != null) {
+            System.out.println("Publishing trades event. ");
+            TradesEvent tradesEvent = new TradesEvent(this, trades);
+            applicationEventPublisher.publishEvent(tradesEvent);
+        } else {
+            System.out.println("Warning: No event publisher defined");
+        }
     }
 }

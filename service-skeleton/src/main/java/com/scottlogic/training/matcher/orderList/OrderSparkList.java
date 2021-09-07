@@ -8,6 +8,7 @@ import org.apache.spark.sql.Encoders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.Dataset;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -20,6 +21,14 @@ public class OrderSparkList extends OrderList {
     private final Encoder<Order> orderEncoder;
     private Dataset<Order> orders;
 
+    @Value("${parquet.root}")
+    private String parquetRoot;
+
+    @Value("${parquet.orders}")
+    private String parquetOrders;
+
+    private String parquetOrdersPath;
+
     @Autowired
     public OrderSparkList(SparkSession spark) {
         this.spark = spark;
@@ -28,8 +37,9 @@ public class OrderSparkList extends OrderList {
 
     @PostConstruct
     public void init() {
+        parquetOrdersPath = parquetRoot + "/" + parquetOrders;
         try {
-            orders = spark.table("orders").as(orderEncoder);
+            orders = spark.read().load(parquetOrdersPath).as(orderEncoder);
         } catch (Exception e) {
             e.printStackTrace();
             orders = spark.createDataset(new ArrayList<>(), orderEncoder);
@@ -68,16 +78,18 @@ public class OrderSparkList extends OrderList {
         return spark.sql("SELECT * FROM orders WHERE action = \"" + action + "\"")
                 .as(orderEncoder)
                 .collectAsList();
-//        return orders.filter((FilterFunction<Order>) o -> o.getAction() == action).collectAsList();
+//        Dataset<Order> filteredOrders = orders.filter((FilterFunction<Order>) o -> o.getAction() == action);
+//        try {
+//            return filteredOrders.collectAsList();
+//        } catch (Exception e) {
+//            System.out.println("exception = " + e);
+//            return new ArrayList<>();
+//        }
     }
 
     @PreDestroy
     public void save() {
         System.out.println("Saving data...");
-        orders.createOrReplaceTempView("ordersTemp");
-
-        spark.sql("INSERT OVERWRITE TABLE orders SELECT * FROM ordersTemp");
-        spark.table("orders").show(false);
-//      trades.write().mode("overwrite").parquet(parquetTradesPath);
+        orders.write().format("delta").mode("overwrite").parquet(parquetOrdersPath);
     }
 }

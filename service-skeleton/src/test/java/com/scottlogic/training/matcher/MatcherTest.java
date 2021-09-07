@@ -3,7 +3,9 @@ package com.scottlogic.training.matcher;
 import static org.junit.Assert.*;
 
 import com.scottlogic.training.matcher.enums.OrderAction;
+import com.scottlogic.training.matcher.events.TradeEventPublisher;
 import com.scottlogic.training.matcher.orderList.IOrderList;
+import com.scottlogic.training.matcher.orderList.OrderArrayList;
 import com.scottlogic.training.matcher.orderList.OrderSQLList;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.SparkSession;
@@ -18,16 +20,9 @@ public class MatcherTest {
 
     @BeforeClass
     public static void setUp() {
-        SparkConf conf = new SparkConf();
-        conf.set("spark.master", "local");
-
-        SparkSession spark = SparkSession.builder()
-                .appName("testOrderMatcher")
-                .config(conf)
-                .enableHiveSupport()
-                .getOrCreate();
-        IOrderList list = new OrderSQLList(spark);
-        matcher = new Matcher(list);
+        IOrderList list = new OrderArrayList();
+        TradeEventPublisher tradeEventPublisher = new TradeEventPublisher();
+        matcher = new Matcher(list, tradeEventPublisher);
         matcher.getOrderList().resetOrders();
     }
 

@@ -13,12 +13,12 @@ import java.util.List;
 public class Matcher {
     private final IOrderList orderList;
 
-    @Autowired
     private TradeEventPublisher tradeEventPublisher;
 
     @Autowired
-    public Matcher(IOrderList orderList) {
+    public Matcher(IOrderList orderList, TradeEventPublisher tradeEventPublisher) {
         this.orderList = orderList;
+        this.tradeEventPublisher = tradeEventPublisher;
     }
 
     public IOrderList getOrderList() {

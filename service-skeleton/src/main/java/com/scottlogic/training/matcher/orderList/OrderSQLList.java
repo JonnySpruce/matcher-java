@@ -15,6 +15,7 @@ public class OrderSQLList extends OrderList {
     @Autowired
     public OrderSQLList(SparkSession spark) {
         this.spark = spark;
+//        spark.createDataset(new ArrayList<>(), Encoders.bean(Order.class)).write().saveAsTable("orders");
     }
 
     public void addOrder(Order newOrder) {

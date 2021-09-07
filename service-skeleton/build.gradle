@@ -17,18 +17,18 @@ repositories {
     jcenter()
 }
 
-def grpcVersion = '1.40.0' // CURRENT_GRPC_VERSION
-def protobufVersion = '3.17.2'
+def grpcVersion = '1.40.1' // CURRENT_GRPC_VERSION
+def protobufVersion = '3.17.3'
 def protocVersion = protobufVersion
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.5.4'
     implementation 'org.springframework.boot:spring-boot-starter-parent:2.5.4'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:2.5.4'
     implementation 'org.springframework.integration:spring-integration-jms:5.5.3'
-    implementation 'org.springframework:spring-messaging'
-    implementation 'org.springframework.boot:spring-boot-devtools'
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.springframework:spring-messaging:5.3.9'
+    implementation 'org.springframework.boot:spring-boot-devtools:2.5.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
     implementation('org.apache.spark:spark-sql_2.12:3.1.2') {
         exclude module: "slf4j-log4j12"
     }
@@ -37,14 +37,13 @@ dependencies {
     implementation ('org.apache.spark:spark-hive_2.12:3.1.2') {
         exclude module: "slf4j-log4j12"
     }
-//    implementation "com.solacesystems:sol-jcsmp:10.2.0"
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
     implementation 'net.devh:grpc-server-spring-boot-starter:2.12.0.RELEASE'
     implementation 'com.solace.spring.boot:solace-jms-spring-boot-starter:4.1.0'
     implementation 'io.projectreactor:reactor-core:3.4.9'
-    testImplementation 'junit:junit'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 // Inform IDEs like IntelliJ IDEA, Eclipse or NetBeans about the generated code.
