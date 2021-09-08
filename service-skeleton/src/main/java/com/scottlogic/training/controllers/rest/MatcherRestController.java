@@ -1,6 +1,5 @@
 package com.scottlogic.training.controllers.rest;
 
-import com.scottlogic.training.matcher.*;
 import com.scottlogic.training.matcher.orderList.IOrderList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.regex.Matcher;
 
-@org.springframework.web.bind.annotation.RestController
+@Component
+@RestController
 public class MatcherRestController {
     private static Matcher matcher;
 

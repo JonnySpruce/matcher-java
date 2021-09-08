@@ -1,9 +1,12 @@
 */*.gradle
 */build/
+*/bin/
 */gradle/
 */out/
 
 .idea
+
+*/node_modules/
 
 # Ignore Gradle GUI com.scottlogic.training.config
 gradle-app.setting

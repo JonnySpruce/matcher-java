@@ -34,7 +34,7 @@ public class ReactorController {
         return Flux.fromIterable(orders);
     }
 
-    @PostMapping("/placeOrder")
+    @PostMapping("/orders")
     public Flux<Trade> placeOrder(@RequestBody Order newOrder) {
         return Mono.just(newOrder)
                 .publishOn(scheduler)
