@@ -59,9 +59,7 @@ public class SolaceSpringController {
         ObjectMapper objectMapper = new ObjectMapper();
         Order newOrder = objectMapper.readValue(jsonOrder, Order.class);
 
-        List<Trade> trades = matcher.receiveOrder(newOrder);
-
-        String tradesJSON = objectMapper.writeValueAsString(trades);
+        matcher.receiveOrder(newOrder);
 
         logger.info("Solace order placed: " + jsonOrder);
     }
