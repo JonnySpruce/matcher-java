@@ -14,7 +14,6 @@ public class TradeEventPublisher {
 
     public void publish(final List<Trade> trades) {
         if(applicationEventPublisher != null) {
-            System.out.println("Publishing trades event. ");
             TradesEvent tradesEvent = new TradesEvent(this, trades);
             applicationEventPublisher.publishEvent(tradesEvent);
         } else {

@@ -87,9 +87,15 @@ The Solace PubSub+ instance is running on AWS, and the console is available [her
 
 There are two defined Topics:
 ```
-/matcher/placeOrder  :   Send an order in JSON format to this topic to place an order
-/matcher/trade       :   All trades generated are emitted to this topic
+matcher/placeOrder  :   Send an order in JSON format to this topic to place an order
+matcher/trade       :   All trades generated are emitted to this topic
 ```
+
+There is also one wildcard topic which the matcher is listening for:
+```
+user/*/placeOrder   :   Where * is the username to place the order under
+```
+This places an order with the username included in the topic. This is just a simple example of using wildcards to pass information in the topic name itself.
 
 #### Queues
 
@@ -107,7 +113,7 @@ The image has been built and can be pulled with the following command:
 $ docker pull jonnyspruce/matcher
 ```
 
-Once pulled, the you can run it with:
+Once pulled, you can run it with:
 
 ```bash
 $ docker run -p 8082:8082 -p 9090:9090 jonnyspruce/matcher

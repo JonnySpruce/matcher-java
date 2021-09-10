@@ -332,5 +332,4 @@ class PubSubPlusBroker {
       console.debug(sMessage.dump());
     });
   }
-
 } //End class

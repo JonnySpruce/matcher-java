@@ -25,7 +25,7 @@ function connectHandler(bResult, sMessage) {
 //handles messages pulled from the broker
 function messageHandler(sMessage) {
     console.debug("message handler called with text: " + sMessage);
-    notify(sMessage);
+    notify("Trade emitted: " + sMessage);
 }
 
 /***HELPER METHODS***/
@@ -58,13 +58,18 @@ $(document).ready(function () {
         var $orderType = $('#orderType');
         var orderType = $orderType.val();
         var jsonObject = {account: userName, action: orderType, price: 1.0, quantity: 1};
-        var orderString = JSON.stringify(jsonObject)
-        notify("Placing order...");
+        var orderString = JSON.stringify(jsonObject);
+        notify("Placing order: " + orderString);
 
         console.debug(orderString);
 
         //attempt a publish to the broker topic
         broker.publish(orderString, alertHandler)
+    })
+
+    $("#replay").click(function () {
+        console.log("starting replay!")
+        broker.startReplay();
     })
 });
 

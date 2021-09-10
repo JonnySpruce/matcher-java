@@ -6,11 +6,12 @@ async function main() {
     // Suggested options for similarity to existing grpc.load behavior
     var packageDefinition = protoLoader.loadSync(
         PROTO_PATH,
-        {keepCase: true,
+        {
+            keepCase: true,
             longs: String,
             enums: String,
             defaults: true,
-            oneofs: true
+            oneofs: false
         });
     var protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
     var matcherRpc = protoDescriptor.matcherRPC;
@@ -19,19 +20,17 @@ async function main() {
 
 
     var orders = await getOrders(matcherStub);
-    console.log("orders:");
+    console.log("\n=== orders: ===");
     console.log(orders);
 
     var trades = await placeRandomOrder(matcherStub);
-    console.log("trades:");
+    console.log("\n=== trades: ===");
     console.log(trades);
 
     var orders = await getOrders(matcherStub);
-    console.log("orders:");
+    console.log("\n=== orders: ===");
     console.log(orders);
 }
-
-main();
 
 function getOrders(matcherStub) {
     return new Promise((resolve, reject) => {
@@ -59,7 +58,7 @@ function placeRandomOrder(matcherStub) {
             "action": buySell[Math.floor(Math.random()*buySell.length)],
         }
 
-        console.log("Placing order: ")
+        console.log("\n=== Placing order: ===")
         console.log(order);
         var tradesListener = matcherStub.placeOrder(order);
 
@@ -72,3 +71,5 @@ function placeRandomOrder(matcherStub) {
         });
     });
 }
+
+main();
