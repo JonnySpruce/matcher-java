@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.scottlogic.training.controllers.websocket.WebsocketController;
 import com.scottlogic.training.matcher.events.TradesEvent;
 import com.scottlogic.training.matcher.Matcher;
 import com.scottlogic.training.matcher.Order;
