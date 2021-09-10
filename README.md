@@ -79,9 +79,11 @@ $ node placeOrders.js
 
 ### Solace PubSub+
 
-An example Solace PubSub+ client is available [here](service-skeleton/src/main/resources/solace/index.html).
+An example Solace PubSub+ client is available [here](service-skeleton/src/main/resources/solace/static).
 
 The Solace PubSub+ instance is running on AWS, and the console is available [here](https://mrw739c2f4ioq.messaging.solace.cloud:943/#/msg-vpns/bWF0Y2hlcnRlc3Q=/properties/summary?token=YWJj.eyJhY2Nlc3NfdG9rZW4iOiAibWF0Y2hlcnRlc3QtYWRtaW46NHU0Nm5oNjhuaXJyNXFjamlhNGkxMTkycHMifQ%3D%3D.eHl6&title=matcherTest&subtitle=matchertest). (NOTE: May need credentials to view)
+
+To configure to connect to your own Solace instance, update the [application.properties file](service-skeleton/src/main/resources/application.properties).
 
 #### Topics
 
